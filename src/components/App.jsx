@@ -19,8 +19,6 @@ function App() {
 
   const [filter, setFilter] = useState('');
 
-  const nameId = nanoid();
-
   const formSubmitHandle = contact => {
     contacts.some(({ name }) => name === contact.name)
       ? Notiflix.Notify.warning(`${contact.name} is already in contacts`)
