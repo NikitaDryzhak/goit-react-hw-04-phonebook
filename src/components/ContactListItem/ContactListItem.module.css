@@ -1,0 +1,16 @@
+.listContacts {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    width: 280px;
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.listBtn {
+    height: 20px;
+    margin-left: 10px;
+}
