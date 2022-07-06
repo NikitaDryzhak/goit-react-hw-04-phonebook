@@ -15,6 +15,7 @@ function Form({ onSubmit }) {
   const handleSubmit = e => {
     e.preventDefault();
     const { name, number } = params;
+
     onSubmit({ id: nanoid(5), name, number });
     reset();
   };

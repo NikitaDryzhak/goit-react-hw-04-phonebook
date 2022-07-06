@@ -3,6 +3,7 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import Notiflix from 'notiflix';
 import { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 
 function App() {
   const [contacts, setContacts] = useState(() => {
@@ -18,10 +19,23 @@ function App() {
 
   const [filter, setFilter] = useState('');
 
-  const formSubmitHandle = contact => {
-    contacts.some(({ name }) => name === contact.name)
-      ? Notiflix.Notify.warning(`${contact.name} is already in contacts`)
-      : setContacts([contact, contacts]);
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const formSubmitHandle = ({ name, number }) => {
+    const newContact = contacts.filter(contact => {
+      return contact.name.toLowerCase().includes(name.toLowerCase());
+    });
+    if (newContact.length > 0) {
+      Notiflix.Notify.warning(`${name} is already in contacts`);
+      return;
+    }
+
+    setContacts(stateContacts => [
+      { id: nanoid(5), name, number },
+      ...stateContacts,
+    ]);
   };
 
   const changeFilter = e => {
@@ -29,17 +43,13 @@ function App() {
   };
 
   const visibleContacts = () =>
-    contacts.filter(contact => {
-      return contact.name.toLowerCase().includes(filter.toLowerCase());
+    contacts.filter(({ name }) => {
+      return name.toLowerCase().includes(filter.toLowerCase());
     });
 
   const deleteContact = contactId => {
     setContacts(contacts.filter(contact => contact.id !== contactId));
   };
-
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const filtered = visibleContacts();
   return (
